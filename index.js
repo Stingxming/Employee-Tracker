@@ -121,3 +121,44 @@ function init() {
 function loadPrompts() {
   console.log("loading prompts");
 }
+
+function loadPrompts() {
+  prompt([
+    {
+      type: "list",
+      name: "choice",
+      message: "What would you like to do?",
+      choices: [
+        {
+          name: "View All Employees",
+          value: "VIEW_EMPLOYEES",
+        },
+        {
+          name: "View All Departments",
+          value: "VIEW_DEPARTMENTS",
+        },
+      ],
+    },
+  ]).then((res) => {
+    let choice = res.choice;
+    switch (choice) {
+      case "VIEW_EMPLOYEES":
+        viewEmployees();
+        break;
+      case "VIEW_DEPARTMENTS":
+        viewDepartments();
+        break;
+      default:
+        quit();
+    }
+  });
+}
+
+// View all employees
+function viewEmployees() {
+  // query database for employees
+}
+
+function viewDepartments() {
+  // query database for departments
+}
