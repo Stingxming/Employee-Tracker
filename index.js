@@ -1,18 +1,8 @@
-const mysql = require("mysql2");
 const inquirer = require("inquirer");
-const cTable = require("console.table");
+require("console.table");
+const db = require("./db");
 
 // importing mysql2, inquire and cTable
-
-// Connect to database
-const db = mysql.createConnection({
-  host: "localhost",
-  // MySQL username,
-  user: "root",
-  // TODO: Add MySQL password here
-  password: process.env.MSQL_PASSWORD,
-  database: "employee_db",
-});
 
 // addEmployee = () => {
 //   inquirer
@@ -109,56 +99,54 @@ const db = mysql.createConnection({
 //     };
 //   };
 // };
-
-// init pattern
-init();
-
-function init() {
-  // load prompts
-  loadPrompts();
-}
+loadPrompts();
 
 function loadPrompts() {
-  console.log("loading prompts");
-}
-
-function loadPrompts() {
-  prompt([
-    {
-      type: "list",
-      name: "choice",
-      message: "What would you like to do?",
-      choices: [
-        {
-          name: "View All Employees",
-          value: "VIEW_EMPLOYEES",
-        },
-        {
-          name: "View All Departments",
-          value: "VIEW_DEPARTMENTS",
-        },
-      ],
-    },
-  ]).then((res) => {
-    let choice = res.choice;
-    switch (choice) {
-      case "VIEW_EMPLOYEES":
-        viewEmployees();
-        break;
-      case "VIEW_DEPARTMENTS":
-        viewDepartments();
-        break;
-      default:
-        quit();
-    }
-  });
+  inquirer
+    .prompt([
+      {
+        type: "list",
+        name: "choice",
+        message: "What would you like to do?",
+        choices: [
+          {
+            name: "View All Employees",
+            value: "VIEW_EMPLOYEES",
+          },
+          {
+            name: "View All Departments",
+            value: "VIEW_DEPARTMENTS",
+          },
+        ],
+      },
+    ])
+    .then((res) => {
+      let choice = res.choice;
+      switch (choice) {
+        case "VIEW_EMPLOYEES":
+          viewEmployees();
+          break;
+        // case "VIEW_DEPARTMENTS":
+        //   viewDepartments();
+        //   break;
+        // default:
+        //   quit();
+      }
+    });
 }
 
 // View all employees
 function viewEmployees() {
   // query database for employees
+  console.log("hello");
+  db.findAllEmployees()
+    .then(([rows]) => {
+      let employees = rows;
+      console.table(employees);
+    })
+    .then(() => loadPrompts());
 }
 
-function viewDepartments() {
-  // query database for departments
-}
+// function viewDepartments() {
+//   // query database for departments
+// }
