@@ -126,11 +126,11 @@ function loadPrompts() {
         case "VIEW_EMPLOYEES":
           viewEmployees();
           break;
-        // case "VIEW_DEPARTMENTS":
-        //   viewDepartments();
-        //   break;
-        // default:
-        //   quit();
+        case "VIEW_DEPARTMENTS":
+          viewDepartments();
+          break;
+        default:
+          quit();
       }
     });
 }
@@ -147,6 +147,6 @@ function viewEmployees() {
     .then(() => loadPrompts());
 }
 
-// function viewDepartments() {
-//   // query database for departments
-// }
+function viewDepartments() {
+  // query database for departments
+}
