@@ -117,6 +117,14 @@ function loadPrompts() {
             name: "View All Departments",
             value: "VIEW_DEPARTMENTS",
           },
+          {
+            name: "View All Roles",
+            value: "VIEW_ROLES",
+          },
+          {
+            name: "Add A Department",
+            value: "ADD_DEPARTMENT",
+          },
         ],
       },
     ])
@@ -128,6 +136,12 @@ function loadPrompts() {
           break;
         case "VIEW_DEPARTMENTS":
           viewDepartments();
+          break;
+        case "VIEW_ROLES":
+          viewRoles();
+          break;
+        case "ADD_DEPARTMENT":
+          addDepartment();
           break;
         default:
           quit();
@@ -149,4 +163,37 @@ function viewEmployees() {
 
 function viewDepartments() {
   // query database for departments
+  db.viewAllDepartments()
+    .then(([rows]) => {
+      let departments = rows;
+      console.table(departments);
+    })
+    .then(() => loadPrompts());
+}
+
+function viewRoles() {
+  // query database for employees
+  db.viewAllRoles()
+    .then(([rows]) => {
+      let roles = rows;
+      console.table(roles);
+    })
+    .then(() => loadPrompts());
+}
+
+function addDepartment() {
+  inquirer
+    .prompt([
+      {
+        type: "input",
+        name: "name",
+        message: "What department would you like to add?",
+      },
+    ])
+    .then((res) => {
+      console.log(res);
+      db.createDepartment(res).then(() =>
+        console.log("added " + res.name + " to the database")
+      );
+    });
 }
